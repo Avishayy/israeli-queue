@@ -1,0 +1,6 @@
+[package]
+name = "israeli-queue"
+version = "0.1.0"
+authors = ["avishay"]
+
+[dependencies]
