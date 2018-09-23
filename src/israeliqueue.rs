@@ -1,5 +1,8 @@
+use std::collections::vec_deque::IntoIter;
 use std::collections::VecDeque;
+use std::iter::IntoIterator;
 
+#[derive(Clone, Default, Debug)]
 pub struct IsraeliQueue<I> {
     queue: VecDeque<I>,
 }
@@ -40,5 +43,15 @@ impl<I> IsraeliQueue<I> {
 
         self.queue.insert(found_index, item);
         found_index
+    }
+}
+
+// Do I also implement referenced iterators? I'll leave it this way for now.
+impl<I> IntoIterator for IsraeliQueue<I> {
+    type Item = I;
+    type IntoIter = IntoIter<I>;
+
+    fn into_iter(self) -> IntoIter<I> {
+        self.queue.into_iter()
     }
 }
