@@ -20,7 +20,7 @@ mod tests {
         let mut iq: IsraeliQueue<i32> = IsraeliQueue::new();
         iq.queue(15, Some(&test_comparator));
         assert!(!iq.is_empty());
-        assert_eq!(15, *iq.peek());
-        assert_eq!(15, iq.dequeue());
+        assert_eq!(15, *iq.peek().unwrap());
+        assert_eq!(15, iq.dequeue().unwrap());
     }
 }

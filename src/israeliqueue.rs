@@ -1,27 +1,31 @@
+use std::collections::VecDeque;
+
 pub struct IsraeliQueue<I> {
-    queue: Vec<I>,
+    queue: VecDeque<I>,
 }
 
 impl<I> IsraeliQueue<I> {
     pub fn new() -> IsraeliQueue<I> {
-        IsraeliQueue { queue: Vec::new() }
+        IsraeliQueue {
+            queue: VecDeque::new(),
+        }
     }
 
     pub fn is_empty(&self) -> bool {
         self.queue.is_empty()
     }
 
-    pub fn peek(&self) -> &I {
-        &self.queue[0]
+    pub fn peek(&self) -> Option<&I> {
+        self.queue.get(0)
     }
 
-    pub fn dequeue(&mut self) -> I {
-        self.queue.remove(0)
+    pub fn dequeue(&mut self) -> Option<I> {
+        self.queue.pop_front()
     }
 
     pub fn queue(&mut self, item: I, comparator: Option<&Fn(&I, &I) -> bool>) -> usize {
         if comparator.is_none() {
-            self.queue.push(item);
+            self.queue.push_front(item);
             return self.queue.len() - 1;
         }
 
