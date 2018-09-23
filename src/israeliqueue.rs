@@ -26,6 +26,8 @@ impl<I> IsraeliQueue<I> {
         self.queue.pop_front()
     }
 
+    // TODO put item after the LAST item that returns true for the comparator in the FIRST
+    // sequence
     pub fn queue(&mut self, item: I, comparator: Option<&Fn(&I, &I) -> bool>) -> usize {
         if comparator.is_none() {
             self.queue.push_front(item);
@@ -36,7 +38,7 @@ impl<I> IsraeliQueue<I> {
 
         for (index, element) in self.queue.iter().enumerate() {
             if comparator.unwrap()(&item, element) {
-                found_index = index;
+                found_index = index + 1;
                 break;
             }
         }
