@@ -1,4 +1,3 @@
-============
 IsraeliQueue
 ============
 
@@ -66,7 +65,7 @@ fn test_persons() {
 }
 ```
 
-Output will be:
+Output:
 ```
 Person { first_name: "Yosi", last_name: "Cohen" }
 Person { first_name: "Mo", last_name: "Cohen" }
