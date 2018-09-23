@@ -1,27 +1,36 @@
+use std::collections::vec_deque::IntoIter;
+use std::collections::VecDeque;
+use std::iter::IntoIterator;
+
+#[derive(Clone, Default, Debug)]
 pub struct IsraeliQueue<I> {
-    queue: Vec<I>,
+    queue: VecDeque<I>,
 }
 
 impl<I> IsraeliQueue<I> {
     pub fn new() -> IsraeliQueue<I> {
-        IsraeliQueue { queue: Vec::new() }
+        IsraeliQueue {
+            queue: VecDeque::new(),
+        }
     }
 
     pub fn is_empty(&self) -> bool {
         self.queue.is_empty()
     }
 
-    pub fn peek(&self) -> &I {
-        &self.queue[0]
+    pub fn peek(&self) -> Option<&I> {
+        self.queue.get(0)
     }
 
-    pub fn dequeue(&mut self) -> I {
-        self.queue.remove(0)
+    pub fn dequeue(&mut self) -> Option<I> {
+        self.queue.pop_front()
     }
 
+    // TODO put item after the LAST item that returns true for the comparator in the FIRST
+    // sequence
     pub fn queue(&mut self, item: I, comparator: Option<&Fn(&I, &I) -> bool>) -> usize {
         if comparator.is_none() {
-            self.queue.push(item);
+            self.queue.push_front(item);
             return self.queue.len() - 1;
         }
 
@@ -29,12 +38,22 @@ impl<I> IsraeliQueue<I> {
 
         for (index, element) in self.queue.iter().enumerate() {
             if comparator.unwrap()(&item, element) {
-                found_index = index;
+                found_index = index + 1;
                 break;
             }
         }
 
         self.queue.insert(found_index, item);
         found_index
+    }
+}
+
+// Do I also implement referenced iterators? I'll leave it this way for now.
+impl<I> IntoIterator for IsraeliQueue<I> {
+    type Item = I;
+    type IntoIter = IntoIter<I>;
+
+    fn into_iter(self) -> IntoIter<I> {
+        self.queue.into_iter()
     }
 }
